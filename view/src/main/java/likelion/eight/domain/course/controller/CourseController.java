@@ -47,15 +47,19 @@ public class CourseController {
             @RequestParam(required = false, name = "categories") Long categoryId,
             @ModelAttribute CourseFilter courseFilter,
             @RequestParam(required = false, name = "sort") String sort,
-            @RequestParam(required = false, name = "search") String search){
-        List<Course> courses;
+            @RequestParam(required = false, name = "search") String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+
         List<Category> categories = categoryService.findAll();
 
+        Pageable pageable = PageRequest.of(page, size);
+
         // 모집중인 코스를 기준으로 필터링 (모집중 고려 O, 카테고리 고려 전, 필터링 기준 고려 O)
-        courses = courseService.findCoursesByFilters(categoryId, courseFilter, sort, search);
+        Page<Course> coursePage = courseService.findCoursesByFilters(categoryId, courseFilter, sort, search, pageable);
 
         // 도메인을 dto로 변환
-        List<CourseDto> courseDtos = courses.stream()
+        List<CourseDto> courseDtos = coursePage.getContent().stream()
                 .map(course -> new CourseDto(course))
                 .collect(Collectors.toList());
 
@@ -70,8 +74,12 @@ public class CourseController {
         }
 
         model.addAttribute("courses", courseDtos);
-        model.addAttribute("count", courses.size());
+        model.addAttribute("count", coursePage.getTotalElements()); // 총 코스 개수
         model.addAttribute("categories", categories);
+
+        model.addAttribute("totalPages", coursePage.getTotalPages()); // 총 페이지수
+        model.addAttribute("currentPage", page); // 현재 페이지
+        model.addAttribute("size", size); // 페이지 사이즈
 
         return "course/courseList";
     }

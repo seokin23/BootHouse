@@ -7,6 +7,7 @@ import likelion.eight.common.service.CookieService;
 import likelion.eight.common.service.port.ClockHolder;
 import likelion.eight.common.service.port.UuidHolder;
 import likelion.eight.domain.user.controller.model.UserCreateRequest;
+import likelion.eight.domain.user.controller.model.UserEditRequest;
 import likelion.eight.domain.user.controller.model.UserLoginRequest;
 import likelion.eight.domain.user.controller.model.UserResponse;
 import likelion.eight.domain.user.converter.UserConverter;

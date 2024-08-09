@@ -3,6 +3,7 @@ package likelion.eight.review;
 import jakarta.persistence.*;
 import likelion.eight.BaseTimeEntity;
 import likelion.eight.course.CourseEntity;
+import likelion.eight.user.UserEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

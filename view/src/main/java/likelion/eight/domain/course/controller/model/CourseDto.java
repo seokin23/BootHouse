@@ -35,6 +35,6 @@ public class CourseDto {
         this.endDate = course.getEndDate();
         this.participationTimeDisplayName = course.getParticipationTime().getDisplayName();
         this.participationTimeDefaultSchedule = course.getParticipationTime().getDefaultSchedule();
-        this.selectionProcedure = course.isOnlineOffline() ? "코딩 테스트 있음" : "코딩 테스트 없음";
+        this.selectionProcedure = course.isCodingTestExempt() ? "코딩 테스트 있음" : "코딩 테스트 없음";
     }
 }

@@ -26,4 +26,13 @@ public interface CourseJpaRepository extends JpaRepository<CourseEntity, Long>,
             "join fetch c.subCourseEntity " +
             "where c.id = :courseId")
     Optional<CourseEntity> findByIdWithBootcamp(Long courseId);
+
+    // 페이징 처리
+//    @Query(value = "SELECT DISTINCT c FROM CourseEntity c " +
+//            "JOIN FETCH c.bootcampEntity " +
+//            "JOIN FETCH c.categoryEntity " +
+//            "JOIN FETCH c.subCourseEntity",
+//            countQuery = "SELECT COUNT(c) FROM CourseEntity c")
+    Page<CourseEntity> findAll(Specification<CourseEntity> specification, Pageable pageable);
+
 }

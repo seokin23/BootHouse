@@ -14,11 +14,12 @@ public interface CourseRepository {
     List<Course> findByClosingDateAfter(LocalDateTime now);
 
     List<Course> findByOpenCoursesByCategory(Long categoryId);
-    List<Course> findCoursesByFilters(
+    Page<Course> findCoursesByFilters(
             Long categoryId,
             CourseFilter courseFilter,
             String sort,
-            String search
+            String search,
+            Pageable pageable
     );
 
     Optional<Course> findCourseById(Long courseId);

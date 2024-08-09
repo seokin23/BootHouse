@@ -47,16 +47,14 @@ public class CourseService {
                 .orElseThrow(() -> new ResourceNotFoundException("No open courses found for category ID: " + categoryId));
     }
 
-    public List<Course> findCoursesByFilters(
+    public Page<Course> findCoursesByFilters(
             Long categoryId,
             CourseFilter courseFilter,
             String sort,
-            String search
+            String search,
+            Pageable pageable
     ){
-        List<Course> coursesByFilters = courseRepository.findCoursesByFilters(categoryId, courseFilter, sort, search);
-        return Optional.ofNullable(coursesByFilters)
-                .filter(c -> !c.isEmpty())
-                .orElseThrow(() -> new ResourceNotFoundException("No course exist by that filter"));
+        return courseRepository.findCoursesByFilters(categoryId, courseFilter, sort, search, pageable);
     }
 
     public Course findCourseById(Long courseId){
