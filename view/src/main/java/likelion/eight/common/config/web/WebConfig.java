@@ -38,8 +38,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/courses/*", // /courses/**가 아니고, /courses/* 가 맞아요
             "/bootcamps/**",
             "/images/**"
-
     );
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

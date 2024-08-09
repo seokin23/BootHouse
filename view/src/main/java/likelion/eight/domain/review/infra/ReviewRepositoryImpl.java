@@ -9,6 +9,8 @@ import likelion.eight.review.ReviewEntity;
 import likelion.eight.review.ifs.ReviewJpaRepository;
 import likelion.eight.user.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,6 +32,12 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
+    public Review save(ReviewEntity reviewEntity, CourseEntity courseEntity, UserEntity userEntity) {
+        reviewJpaRepository.save(reviewEntity);
+        return ReviewConverter.toDto(reviewEntity);
+    }
+
+    @Override
     public Review getById(Long id) {
         return reviewJpaRepository.findById(id)
                 .map(ReviewConverter::toDto)
@@ -37,9 +45,8 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public Optional<Review> findById(Long id) {
-        return reviewJpaRepository.findById(id)
-                .map(ReviewConverter::toDto);
+    public Optional<ReviewEntity> findById(Long id) {
+        return reviewJpaRepository.findById(id);
     }
 
     @Override
@@ -51,11 +58,8 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public List<Review> findAll() {
-        List<ReviewEntity> reviewEntities = reviewJpaRepository.findAll();
-        return reviewEntities.stream()
-                .map(ReviewConverter::toDto)
-                .collect(Collectors.toList());
+    public Page<ReviewEntity> findAll(Pageable pageable) {
+        return reviewJpaRepository.findAll(pageable);
     }
 
     @Override
@@ -79,4 +83,24 @@ public class ReviewRepositoryImpl implements ReviewRepository {
                 .map(ReviewConverter::toDto);
     }
 
+    @Override
+    public Page<ReviewEntity> searchByKeyword(String keyword, Pageable pageable) {
+        return reviewJpaRepository.searchByKeyword(keyword,pageable);
+    }
+
+    @Override
+    public Page<ReviewEntity> sortByCondition(String sortBy, Pageable pageable) {
+
+        return reviewJpaRepository.sortByCondition(sortBy, pageable);
+    }
+
+    @Override
+    public Optional<ReviewEntity> findPreviousReview(Long reviewId) {
+        return reviewJpaRepository.findTopByIdLessThanOrderByIdDesc(reviewId);
+    }
+
+    @Override
+    public Optional<ReviewEntity> findNextReview(Long reviewId) {
+        return reviewJpaRepository.findTopByIdGreaterThanOrderByIdAsc(reviewId);
+    }
 }

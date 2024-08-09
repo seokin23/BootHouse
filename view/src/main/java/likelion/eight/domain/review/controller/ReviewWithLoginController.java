@@ -33,6 +33,7 @@ public class ReviewWithLoginController {
 
         Long userId = loginUser.getId();
         if (reviewService.existsByUserIdAndCourseId(userId, courseId)) {
+
             model.addAttribute("error", "이미 해당 코스에 대한 리뷰를 작성하였습니다.");
 
             Long reviewId = reviewService.findReviewByCourseIdAndUserId(courseId, userId).getId();
@@ -53,24 +54,11 @@ public class ReviewWithLoginController {
     }
 
     @PostMapping("/reviews/new/{courseId}")
-    public String createReview(@ModelAttribute ReviewCreateRequest reviewCreateRequest, @PathVariable Long courseId, @Login LoginUser loginUser, Model model) {
+    public String createReview(@ModelAttribute ReviewCreateRequest reviewCreateRequest, @PathVariable Long courseId, @Login LoginUser loginUser) {
 
         Long userId = loginUser.getId();
 
-
-        Review review = Review.builder()
-                .title(reviewCreateRequest.getTitle())
-                .oneLineReview(reviewCreateRequest.getOneLineReview())
-                .advantages(reviewCreateRequest.getAdvantages())
-                .disadvantages(reviewCreateRequest.getDisadvantages())
-                .instructorEvaluation(reviewCreateRequest.getInstructorEvaluation())
-                .rating(reviewCreateRequest.getRating())
-                .courseId(courseId)
-                .userId(userId)
-                .viewCount(0) //기본 값
-                .build();
-
-        reviewService.saveReview(review);
+        reviewService.saveReview(reviewCreateRequest, userId, courseId);
 
         return "redirect:/reviews";
     }

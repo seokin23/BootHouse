@@ -58,29 +58,6 @@ public class CourseInitData implements CommandLineRunner {
 //
 //        courseRepository.save(course);
 
-//        BootCampEntity bootCamp = bootCampRepository.findByName("멋쟁이사자처럼");
-//        CategoryEntity category = categoryRepository.findByName("웹개발");
-//        SubCourseEntity subCourse = subCourseRepository.findByName("백엔드");
-//
-//        CourseEntity course = CourseEntity.builder()
-//                .bootcampEntity(bootCamp)
-//                .categoryEntity(category)
-//                .subCourseEntity(subCourse)
-//                .name("Java 첫걸음 시작하기")
-//                .startDate(LocalDate.of(2024, 8, 5))
-//                .endDate(LocalDate.of(2024, 9, 15))
-//                .closingDate(LocalDateTime.of(2024, 8,2,14,0))
-//                .codingTestExempt(false)
-//                .cardRequirement(true)
-//                .onlineOffline(true)
-//                //.location() -- 온라인이라 무시
-//                .tuitionType("무료")
-//                .summary("온라인, 파트타임으로 진행되는 KDC(무료) 백엔드 부트챌린지입니다. 선발절차에 코딩테스트는 없습니다.")
-//                .participationTime(ParticipationTime.PART_TIME)
-//                .maxParticipants(-1) // 정원없음
-//                .build();
-//
-//        courseRepository.save(course);
 //
 //        BootCampEntity bootCamp = bootCampRepository.findByName("코드잇");
 //        CategoryEntity category = categoryRepository.findByName("웹개발");
@@ -214,7 +191,7 @@ public class CourseInitData implements CommandLineRunner {
 //                .categoryEntity(category)
 //                .subCourseEntity(subCourse)
 //                .name("데이터분석 부트캠프 16기")
-
+//
 //                .startDate(LocalDate.of(2024, 9, 19))
 //                .endDate(LocalDate.of(2025, 12, 10))
 //                .closingDate(LocalDateTime.of(2024, 9, 4, 0,0))

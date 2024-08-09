@@ -2,6 +2,15 @@
  <head>
     <meta charset="UTF-8">
     <title>Review Details</title>
+    <style>
+        .like-button {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .liked {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h2>Review Details</h2>
@@ -36,9 +45,9 @@
         <td th:text="${review.viewCount}">View Count</td>
     </tr>
     <tr>
-<!--        <th>Course</th>-->
-<!--        <td th:text="${review.courseId}">Course Name</td>-->
-<!--    </tr>-->
+        <th>Course</th>
+        <td th:text="${course.name}">Course Name</td>
+    </tr>
     <tr>
         <th>Created Date</th>
         <td th:text="${#temporals.format(review.registrationDate, 'yyyy-MM-dd HH:mm:ss')}">Created Date</td>
@@ -49,6 +58,11 @@
     </tr>
 </table>
 
+<!-- 좋아요 버튼 추가 -->
+<div>
+    <span id="likeButton" class="like-button" onclick="toggleLike(${review.id})">&#9825;</span>
+</div>
+
 <a href="/reviews">Back to All Reviews</a>
 
 <div th:if="${review.userId == loginUser.id}">
@@ -57,6 +71,41 @@
         <button type="submit">Delete Review</button>
     </form>
 </div>
+
+
+<!-- 이전글, 다음글 링크 추가 -->
+<div>
+    <div th:if="${previousReview != null}">
+        <a th:href="@{/reviews/{id}(id=${previousReview.id})}">Previous Review</a>
+    </div>
+    <div th:if="${nextReview != null}">
+        <a th:href="@{/reviews/{id}(id=${nextReview.id})}">Next Review</a>
+    </div>
+</div>
+
+
+<script>
+    const likeButton = document.getElementById('likeButton');
+    let liked = false; // 초기 좋아요 상태 (서버에서 가져와서 설정)
+
+    function toggleLike(reviewId) {
+        liked = !liked;
+        likeButton.innerHTML = liked ? '&#9829;' : '&#9825;';
+        likeButton.classList.toggle('liked');
+
+        fetch(`/likes/review/${reviewId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.text())
+            .then(message => {
+                console.log(message); // 서버에서 반환된 메시지를 콘솔에 출력
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 
 </body>
 </html>

@@ -6,6 +6,32 @@
 </head>
 <body>
 <h2>Reviews</h2>
+
+<!-- 검색 폼 -->
+<form th:action="@{/reviews/search}" method="get">
+    <div>
+        <label for="keyword">Search:</label>
+        <input type="text" id="keyword" name="keyword" th:value="${searchCondition.keyword}">
+        <button type="submit">Search</button>
+    </div>
+</form>
+
+<!-- 정렬 폼 -->
+<form th:action="@{/reviews/sort}" method="get">
+    <div>
+        <label for="sortBy">Sort by:</label>
+        <select id="sortBy" name="sortBy">
+            <option value="" th:selected="${sortCondition.sortBy == null}">Select</option>
+            <option value="ratingDesc" th:selected="${sortCondition.sortBy == 'ratingDesc'}">Highest Rating</option>
+            <option value="ratingAsc" th:selected="${sortCondition.sortBy == 'ratingAsc'}">Lowest Rating</option>
+            <option value="viewCount" th:selected="${sortCondition.sortBy == 'viewCount'}">Most Viewed</option>
+            <option value="recent" th:selected="${sortCondition.sortBy == 'recent'}">Most Recent</option>
+            <option value="oldest" th:selected="${sortCondition.sortBy == 'oldest'}">Oldest</option>
+        </select>
+        <button type="submit">Sort</button>
+    </div>
+</form>
+
 <table border="1">
     <thead>
     <tr>
@@ -14,12 +40,31 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="review : ${reviews}">
+    <tr th:each="review : ${reviewPage.content}">
         <td><a th:href="@{/reviews/{id}(id=${review.id})}" th:text="${review.title}">Title</a></td>
         <td th:text="${review.oneLineReview}">One Line Review</td>
     </tr>
     </tbody>
 </table>
+
+<!-- 페이징 -->
+<div>
+    <span th:text="'Page ' + ${reviewPage.number + 1} + ' of ' + ${reviewPage.totalPages}">Page 1 of 1</span>
+    <ul>
+        <li th:if="${reviewPage.hasPrevious()}">
+            <a th:href="@{/reviews(page=${reviewPage.number - 1}, size=${reviewPage.size})}">Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(1, reviewPage.totalPages)}"
+            th:classappend="${i == reviewPage.number + 1} ? 'active'">
+            <a th:href="@{/reviews(page=${i - 1}, size=${reviewPage.size})}"
+               th:text="${i}">1</a>
+        </li>
+        <li th:if="${reviewPage.hasNext()}">
+            <a th:href="@{/reviews(page=${reviewPage.number + 1}, size=${reviewPage.size})}">Next</a>
+        </li>
+    </ul>
+</div>
+
 
 </body>
 </html>

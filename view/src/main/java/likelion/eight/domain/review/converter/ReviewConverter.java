@@ -1,5 +1,6 @@
 package likelion.eight.domain.review.converter;
 
+import likelion.eight.common.service.port.ClockHolder;
 import likelion.eight.course.CourseEntity;
 import likelion.eight.domain.review.controller.model.ReviewCreateRequest;
 import likelion.eight.domain.review.model.Review;
@@ -24,6 +25,23 @@ public class ReviewConverter {
                 .viewCount(review.getViewCount() != null ? review.getViewCount() : 0)
                 .registrationDate(review.getRegistrationDate())
                 .lastModifiedDate(review.getLastModifiedDate())
+                .build();
+    }
+
+    public static ReviewEntity toReviewEntity(ReviewCreateRequest reviewCreateRequest, CourseEntity courseEntity, UserEntity userEntity, ClockHolder clockHolder) {
+        return ReviewEntity.builder()
+                .id(reviewCreateRequest.getId())
+                .courseEntity(courseEntity)
+                .userEntity(userEntity)
+                .title(reviewCreateRequest.getTitle())
+                .oneLineReview(reviewCreateRequest.getOneLineReview())
+                .advantages(reviewCreateRequest.getAdvantages())
+                .disadvantages(reviewCreateRequest.getDisadvantages())
+                .instructorEvaluation(reviewCreateRequest.getInstructorEvaluation())
+                .rating(reviewCreateRequest.getRating())
+                .viewCount(0)
+                .registrationDate(clockHolder.now())
+                .lastModifiedDate(clockHolder.now())
                 .build();
     }
 
